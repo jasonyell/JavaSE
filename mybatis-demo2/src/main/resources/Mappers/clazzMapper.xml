@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.dao.ClazzDao">
+
+
+    <cache readOnly="true"/>
+
+    <resultMap id="clazzMap1" type="Clazz">
+        <id column="cid" property="classId"></id>
+        <result column="cname" property="className"></result>
+        <result column="cdesc" property="classDesc"></result>
+        <!--Clazz对象的stus属性是一个list集合，需要使用collection标签-->
+        <!-- collection 中 oftype 属性声明集合中元素的类型-->
+        <collection property="stus" ofType="Student">
+            <result column="sid" property="stuId"/>
+            <result column="sname" property="stuName"/>
+            <result column="sage" property="stuAge"/>
+        </collection>
+
+    </resultMap>
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <!--<select id="queryClazz1" resultMap="clazzMap1">-->
+        <!--select cid, cname, cdesc, sid, sname, sage-->
+        <!--from class a inner join student b-->
+        <!--on a.cid = b.scid-->
+        <!--where a.cid = #{classId}-->
+    <!--</select>-->
+
+    <resultMap id="clazzMap" type="Clazz">
+        <id column="cid" property="classId"></id>
+        <result column="cname" property="className"></result>
+        <result column="cdesc" property="classDesc"></result>
+        <collection property="stus" select="com.jason.dao.StudentDao.listStudentByCid" column="cid"></collection>
+    </resultMap>
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <select id="queryClazz" resultMap="clazzMap">
+        select cid, cname, cdesc
+        from class
+        where cid = #{classId}
+    </select>
+
+</mapper>

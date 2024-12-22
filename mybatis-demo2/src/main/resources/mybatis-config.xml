@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                 "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="jdbc.properties"></properties>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.jason.pojo.Users" alias="User"></typeAlias>
+        <typeAlias type="com.jason.pojo.Detail" alias="Detail"></typeAlias>
+        <typeAlias type="com.jason.pojo.Clazz" alias="Clazz"></typeAlias>
+        <typeAlias type="com.jason.pojo.Student" alias="Student"></typeAlias>
+        <typeAlias type="com.jason.pojo.Course" alias="Course"></typeAlias>
+        <!--<typeAlias type="" alias=""></typeAlias>-->
+
+    </typeAliases>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="Mappers/userMapper.xml"/>
+        <mapper resource="Mappers/detailMapper.xml"/>
+        <mapper resource="Mappers/clazzMapper.xml"/>
+        <mapper resource="Mappers/studentMap.xml"/>
+        <mapper resource="Mappers/courseMapper.xml"/>
+    </mappers>
+
+</configuration>

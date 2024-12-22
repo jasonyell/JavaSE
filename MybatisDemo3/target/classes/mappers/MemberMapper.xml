@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.MemberDAO">
+
+    <cache readOnly="true"/>
+
+    <resultMap id="memberMap" type="Member">
+        <id column="member_id" property="memberId"></id>
+        <result column="member_nick" property="memberNick"></result>
+        <result column="member_gender" property="memberGender"></result>
+        <result column="member_age" property="memberAge"></result>
+        <result column="member_city" property="memberCity"></result>
+    </resultMap>
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <select id="searchMember1" resultMap="memberMap">
+      select member_id,member_nick,member_gender,member_age,member_city
+      from members
+--       where 1=1 用where标签代替
+      <!--<where>-->
+        <!--<if test="gender != null"> &lt;!&ndash; gender 就是参数的属性/参数mapper的key &ndash;&gt;-->
+            <!--and member_gender=#{gender}-->
+        <!--</if>-->
+        <!--<if test="minAge != null">-->
+            <!--and member_age &gt;= #{minAge} &lt;!&ndash; &gt; 大于&ndash;&gt;-->
+        <!--</if>-->
+        <!--<if test="maxAge != null">-->
+            <!--and member_age &lt;= #{maxAge} &lt;!&ndash; &lt; 小于&ndash;&gt;-->
+        <!--</if>-->
+        <!--<if test="city != null">-->
+            <!--and member_city = #{city}-->
+        <!--</if>-->
+      <!--</where>-->
+      <!-- prefixOverrides忽略  -->
+      <trim prefix="where" prefixOverrides="and | or" suffix="order by member_age">
+          <if test="gender != null"> <!-- gender 就是参数的属性/参数mapper的key -->
+              and member_gender=#{gender}
+          </if>
+          <if test="minAge != null">
+              and member_age &gt;= #{minAge} <!-- &gt; 大于-->
+          </if>
+          <if test="maxAge != null">
+              and member_age &lt;= #{maxAge} <!-- &lt; 小于-->
+          </if>
+          <if test="city != null">
+              and member_city = #{city}
+          </if>
+      </trim>
+    </select>
+
+    <select id="searchMemberByCity" resultMap="memberMap">
+      select member_id,member_nick,member_gender,member_age,member_city
+--       from members where member_city in('西安','广元');
+      from members where member_city in
+      <foreach collection="list" item="cityName" separator="," open="(" close=")">
+          #{cityName}
+      </foreach>
+    </select>
+
+    <select id="searchMemberByNick" resultMap="memberMap">
+        SELECT member_id,member_nick,member_gender,member_age,member_city
+        from members
+--         % 代表任意一个or多个字符  _代表任意一个字符
+        where member_nick like '%${keyWord}%'
+    </select>
+
+    <select id="queryMemberById" resultMap="memberMap" useCache="false">
+        SELECT member_id,member_nick,member_gender,member_age,member_city
+        from members
+        where member_id=#{mid}
+    </select>
+
+    <!--
+        ${key} 表示获取参数，想获取参数的值拼接带SQL语句中，在编译执行SQL语句，可能引起SQL注入问题
+        #{key} 表示获取参数，先完成SQL编译（预编译），预编译之后再将获取的参数设置到SQL中，可以避免SQL注入问题
+    -->
+
+    <update id="updateMember" flushCache="true">
+        update memebers set member_age=#{age} where member_id=#{mid}
+    </update>
+
+
+
+
+</mapper>

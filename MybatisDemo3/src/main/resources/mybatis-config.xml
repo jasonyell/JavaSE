@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--
+        properties 标签：1.可以定义键值对 2.可以引用属性文件
+    -->
+    <properties resource="jdbc.properties">
+        <!--<property name="mysql_url" value="jdbc:mysql://localhost:3306/mybatisday1?characterEncoding=utf-8&amp;useSSL=false"/>-->
+    </properties>
+    
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.mybatis.pojo.Member" alias="Member"/>
+        <typeAlias type="com.mybatis.pojo.MemberSearchCondition" alias="Member1"/>
+        <typeAlias type="com.mybatis.pojo.Student" alias="Student"/>
+        <typeAlias type="com.mybatis.pojo.Clazz" alias="Clazz"/>
+
+    </typeAliases>
+
+    <!-- 在 environments 配置数据库连接信息 -->
+    <!-- 在 environments 标签中可以定义多个 environment标签  每一个environment标签可以定义一套连接配置-->
+    <!-- default属性 用来指定使用那个environment标签-->
+    <environments default="mysql">
+
+        <!-- environment 标签用于配置数据库连接信息 -->
+        <environment id="mysql">
+            <!--
+              transactionManager 用于配置数据库的管理方式
+                type="JDBC" 可以手动提交事务
+                type="MANAGED" 事务的提交交给容器管理
+            -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- dataSource 标签用于配置数据库连接信息 POOLED|UNPOOLED-->
+
+            <!-- POOLED 使用了Mybatis 内置的连接池实现 -->
+            <!-- mybatis 需要一个来连接池工厂，这个工厂可以提供数据库连接池 PooledDataSourceFactory -->
+            <!--<dataSource type="POOLED">-->
+            <dataSource type="com.mybatis.utils.DruidDataSourceFactory">
+                <property name="driverClass" value="${mysql_driver}"/>
+                <property name="jdbcUrl" value="${mysql_url}"/>
+                <property name="username" value="${mysql_username}"/>
+                <property name="password" value="${mysql_password}"/>
+            </dataSource>
+
+            <!--<dataSource type="POOLED">-->
+                <!--&lt;!&ndash;<property name="driver" value="com.mysql.jdbc.Driver"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="url" value="${mysql_url}"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="username" value="root"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="password" value="1234"/>&ndash;&gt;-->
+                <!--<property name="driver" value="${mysql_driver}"/>-->
+                <!--<property name="url" value="${mysql_url}"/>-->
+                <!--<property name="username" value="${mysql_username}"/>-->
+                <!--<property name="password" value="${mysql_password}"/>-->
+            <!--</dataSource>-->
+
+        </environment>
+
+    </environments>
+
+    <!-- mappers 用于载入映射文件 -->
+    <mappers>
+        <mapper resource="mappers/MemberMapper.xml"/>
+        <mapper resource="mappers/ClazzMapper.xml"/>
+        <mapper resource="mappers/StudentMapper.xml"/>
+    </mappers>
+</configuration>

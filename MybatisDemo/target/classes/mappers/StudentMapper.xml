@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper文件相当于 DAO接口 的实现类 namespace属性要指定实现DAO接口的全限定名-->
+<mapper namespace="com.mybatis.dao.StudentDao">
+
+    <!--<cache type="" size="" readOnly=""/>-->
+
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <!-- useGeneratedKeys 设置添加操作是否需要回填生成的主键 -->
+    <!-- keyProperty 设置回填的主键值赋值到参数对象的哪个属性 -->
+    <insert id="insertStudent" parameterType="com.mybatis.pojo.Student" useGeneratedKeys="true" keyProperty="stuId">
+        insert into tb_students(stu_num,stu_name,stu_sex,stu_age)
+        values(#{stuNum},#{stuName},#{stuGender},#{stuAge})
+    </insert>
+
+    <delete id="deleteStudent">
+        delete from tb_Students where stu_num = #{stuNum}
+    </delete>
+
+    <update id="updateStudent">
+        update tb_students set
+          stu_name = #{stuName},
+          stu_sex = #{stuGender},
+          stu_age = #{stuAge}
+        where
+          stu_Num = #{stuNum}
+    </update>
+
+    <!-- 方式1-->
+
+     <!--resultType 找到对应的对象路径-->
+    <!--<select id="listStudent" resultType="com.mybatis.pojo.Student" >-->
+<!--&#45;&#45;      取别名让字段与对象字段名对应-->
+        <!--select sid stuId, stu_num stuNum, stu_name stuName, stu_sex stuGender, stu_age stuAge-->
+        <!--from tb_students-->
+    <!--</select>-->
+
+    <!--方式2 对应映射关系 resultMap 标签用于定义实体类和数据表的映射关系（ORM）-->
+    <resultMap id="studentMap" type="com.mybatis.pojo.Student">
+        <id column="sid" property="stuId"></id>
+        <result column="stu_num" property="stuNum"></result>
+        <result column="stu_name" property="stuName"></result>
+        <result column="stu_sex" property="stuGender"></result>
+        <result column="stu_age" property="stuAge"></result>
+    </resultMap>
+
+    <sql id="wanglaoji">sid , stu_num , stu_name, stu_sex , stu_age</sql>
+    <!--<select id="listStudent" resultMap="studentMap">-->
+        <!--select <include refid="wanglaoji"/>-->
+        <!--from tb_students-->
+    <!--</select>-->
+
+
+    <!--resultMap 用于引用实体的映射关系，当配置了resultMap之后，resultType 就可以省略-->
+    <select id="listStudent" resultMap="studentMap">
+        select sid , stu_num , stu_name, stu_sex , stu_age
+        from tb_students
+    </select>
+
+    <select id="queryStudent" resultMap="studentMap">
+        select sid , stu_num , stu_name, stu_sex , stu_age
+        from tb_students
+        where stu_num=#{stuNum}
+    </select>
+
+
+    <!--
+        limit #{arg0},#{arg1}
+        limit #{param1},#{param2}
+    -->
+    <!--<select id="listStudentByPage" resultMap="studentMap" >-->
+        <!--select sid , stu_num , stu_name, stu_sex , stu_age-->
+        <!--from tb_students-->
+        <!--limit #{start}, #{pageSize}-->
+    <!--</select>-->
+
+    <select id="countStudent" resultType="int">
+        select count(1)
+        from tb_students
+    </select>
+
+    <select id="listStudentsByGender" resultMap="studentMap">
+        select <include refid="wanglaoji"/>
+        from tb_students
+        where stu_sex=#{gender}
+    </select>
+
+
+</mapper>

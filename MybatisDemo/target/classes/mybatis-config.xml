@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--
+        properties 标签：1.可以定义键值对 2.可以引用属性文件
+    -->
+    <properties resource="jdbc.properties">
+        <!--<property name="mysql_url" value="jdbc:mysql://localhost:3306/mybatisday1?characterEncoding=utf-8&amp;useSSL=false"/>-->
+    </properties>
+
+    <!--设置mybatis的属性-->
+    <!--<settings>-->
+        <!--&lt;!&ndash;设置启动二级缓存&ndash;&gt;-->
+        <!--<setting name="cacheEnabled" value="true"/>-->
+        <!--&lt;!&ndash;设置启动延迟加载&ndash;&gt;-->
+        <!--<setting name="lazyLoadingEnabled" value="false"/>-->
+    <!--</settings>-->
+
+    <!--用于给实体类取别名，在映射文件中可以直接使用别名来代替实体类的全限定名-->
+    <!--<typeAliases>-->
+        <!--<typeAlias type="com.mybatis.pojo.Student" alias="Student"/>-->
+    <!--</typeAliases>-->
+
+    <!-- 配置mybatis插件 例如分页插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+
+    <!-- 在 environments 配置数据库连接信息 -->
+    <!-- 在 environments 标签中可以定义多个 environment标签  每一个environment标签可以定义一套连接配置-->
+    <!-- default属性 用来指定使用那个environment标签-->
+    <environments default="mysql">
+
+        <!-- environment 标签用于配置数据库连接信息 -->
+        <environment id="mysql">
+            <!--
+              transactionManager 用于配置数据库的管理方式
+                type="JDBC" 可以手动提交事务
+                type="MANAGED" 事务的提交交给容器管理
+            -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- dataSource 标签用于配置数据库连接信息 POOLED|UNPOOLED-->
+            <dataSource type="POOLED">
+                <!--<property name="driver" value="com.mysql.jdbc.Driver"/>-->
+                <!--<property name="url" value="${mysql_url}"/>-->
+                <!--<property name="username" value="root"/>-->
+                <!--<property name="password" value="1234"/>-->
+                <property name="driver" value="${mysql_driver}"/>
+                <property name="url" value="${mysql_url}"/>
+                <property name="username" value="${mysql_username}"/>
+                <property name="password" value="${mysql_password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!-- mappers 用于载入映射文件 -->
+    <mappers>
+        <mapper resource="mappers/StudentMapper.xml"></mapper>
+    </mappers>
+</configuration>

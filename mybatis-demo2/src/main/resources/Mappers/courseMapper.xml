@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.dao.CourseDao">
+
+    <resultMap id="CourseMap" type="Course">
+        <id column="course_id" property="courseId"/>
+        <result column="course_name" property="courseName"/>
+        <collection property="students" ofType="Student">
+            <result column="sid" property="stuId"/>
+            <result column="sname" property="stuName"/>
+            <result column="sage" property="stuAge"/>
+        </collection>
+    </resultMap>
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <select id="queryCourse" resultMap="CourseMap">
+        select course_id, course_name, c.sid, c.sname, c.sage
+        from courses a INNER JOIN grades b INNER JOIN student c
+        on a.course_id = b.cid and b.sid = c.sid
+        where a.course_id = #{courseId}
+    </select>
+
+    <resultMap id="CourseMap1" type="Course">
+        <id column="course_id" property="courseId"/>
+        <result column="course_name" property="courseName"/>
+        <collection property="students" select="com.jason.dao.StudentDao.queryStudentByCourseId" column="course_id"/>
+    </resultMap>
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <select id="queryCourse1" resultMap="CourseMap1">
+        select course_id, course_name
+        from courses
+        where course_id = #{courseId}
+    </select>
+
+
+</mapper>

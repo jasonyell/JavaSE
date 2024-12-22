@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.dao.DetailDao">
+
+    <!--定义接口方法对应的 SQL 语句-->
+    <insert id="insertDetail">
+        insert into details (user_addr,user_tel,user_desc,uid)
+        values (#{userAddr},#{userTel},#{userDesc},#{userId})
+    </insert>
+
+    <resultMap id="detailMap" type="Detail">
+        <id column="detail_id" property="detailId"></id>
+        <result column="user_addr" property="userAddr"></result>
+        <result column="user_tel" property="userTel"></result>
+        <result column="user_desc" property="userDesc"></result>
+    </resultMap>
+
+
+    <select id="queryDetailByUserId" resultMap="detailMap">
+      select detail_id,user_addr,user_tel,user_desc
+      from details where uid=#{uid}
+    </select>
+
+</mapper>
