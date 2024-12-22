@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 对于一个xml文件如果作为框架的配置文件，需要遵守框架的配置规则 -->
+<!-- 通常一个框架为了让开发者能正确配置，都会提供xml的规范文件（dtd\xsd） -->
+
+    <!-- 通过bean将实体类配置给Spring容器进行管理 id表示实体类的唯一标识-->
+
+    <!--<bean id="stu" class="com.jy.ioc.beans.Student">-->
+        <!--<property name="stuName" value="jason"/>-->
+        <!--<property name="stuNum" value="1001"/>-->
+        <!--<property name="stuAge" value="18"/>-->
+        <!--<property name="stuGender" value="man"/>-->
+        <!--<property name="enterenceTime" ref="date"/>-->
+    <!--</bean>-->
+
+    <bean id="date" class="java.util.Date">
+        <property name="year" value="2024"/>
+        <property name="month" value="8"/>
+        <property name="date" value="10"/>
+    </bean>
+
+    <!-- bean 标签中可以通过init-method属性制定当前bean的初始化方法，初始化方法在构造器执行之后，执行-->
+    <!-- bean 标签中可以通过destroy-method属性制定当前bean的销毁方法，销毁方法在对象销毁执行之前，执行-->
+    <bean id="book" class="com.jy.ioc.beans.Book" scope="prototype" init-method="iniz" destroy-method="destory"></bean>
+
+    <bean id="cla" class="com.jy.ioc.beans.Clazz">
+        <property name="clazzName" value="java1"/>
+        <property name="clazzNum" value="01"/>
+    </bean>
+
+    <bean id="clazz" class="com.jy.ioc.beans.Clazz">
+        <property name="clazzName" value="java1"/>
+        <property name="clazzNum" value="01"/>
+    </bean>
+
+    <!--<bean id="stu" class="com.jy.ioc.beans.Student">-->
+        <!--&lt;!&ndash; 简单类型 &ndash;&gt;-->
+        <!--<property name="stuAge" value="12"/>-->
+        <!--<property name="weight" value="23.21"/>-->
+        <!--&lt;!&ndash; 字符串类型 &ndash;&gt;-->
+        <!--<property name="stuNum" value="1001"/>-->
+        <!--&lt;!&ndash; 日期类型 &ndash;&gt;-->
+        <!--<property name="enterenceTime">-->
+            <!--<bean class="java.util.Date"/>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; 自定义对象类型 &ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="clazz" ref="cla"/>&ndash;&gt;-->
+
+        <!--<property name="clazz">-->
+            <!--<bean  class="com.jy.ioc.beans.Clazz">-->
+                <!--<property name="clazzName" value="java1"/>-->
+                <!--<property name="clazzNum" value="01"/>-->
+            <!--</bean>-->
+        <!--</property>-->
+
+        <!--&lt;!&ndash;<property name="habbies" value="A,B"/>&ndash;&gt;-->
+
+        <!--<property name="habbies">-->
+            <!--<list>-->
+                <!--<value>a</value>-->
+                <!--<value>b</value>-->
+                <!--<value>C</value>-->
+            <!--</list>-->
+        <!--</property>-->
+
+        <!--<property name="books">-->
+            <!--<list>-->
+                <!--<bean class="com.jy.ioc.beans.Book"></bean>-->
+                <!--<bean class="com.jy.ioc.beans.Book"></bean>-->
+                <!--<bean class="com.jy.ioc.beans.Book"></bean>-->
+                <!--<bean class="com.jy.ioc.beans.Book"></bean>-->
+
+                <!--<ref bean="book"/>-->
+                <!--<ref bean="book"/>-->
+                <!--<ref bean="book"/>-->
+                <!--<ref bean="book"/>-->
+            <!--</list>-->
+        <!--</property>-->
+
+        <!--<property name="set">-->
+            <!--<set>-->
+                <!--<value>111</value>-->
+                <!--<value>222</value>-->
+            <!--</set>-->
+        <!--</property>-->
+
+        <!--<property name="map">-->
+            <!--<map>-->
+                <!--<entry>-->
+                    <!--<key>-->
+                        <!--<value>asd</value>-->
+                    <!--</key>-->
+                    <!--<value>sada</value>-->
+                <!--</entry>-->
+                <!--<entry>-->
+                    <!--<key>-->
+                        <!--<value>-->
+                            <!--asdad-->
+                        <!--</value>-->
+                    <!--</key>-->
+                    <!--<value>ssssss</value>-->
+                <!--</entry>-->
+            <!--</map>-->
+        <!--</property>-->
+
+    <!--</bean>-->
+
+
+    <!--<bean id="stu1" class="com.jy.ioc.beans.Student" autowire="byName">-->
+        <!--<property name="stuNum" value="1001"/>-->
+    <!--</bean>-->
+
+    <!-- 构造器注入 -->
+    <bean id="stu" class="com.jy.ioc.beans.Student">
+        <constructor-arg index="0" value="10001"/>    <!-- 字符串 -->
+        <constructor-arg value="jason"/>
+        <constructor-arg value="man"/>
+        <constructor-arg value="90.5"/>
+        <constructor-arg value="29"/>       <!-- 简单类型 -->
+        <constructor-arg ref="date"/>       <!-- 日期类型 -->
+
+        <constructor-arg ref="cla"/>        <!-- 自定义类 -->
+        <!--<constructor-arg>-->
+            <!--<bean class=""></bean>-->
+        <!--</constructor-arg>-->
+    </bean>
+
+    <bean id="stu1" class="com.jy.ioc.beans.Student">
+        <constructor-arg index="0" >
+            <list>
+                <value>11</value>
+                <value>22</value>
+                <value>33</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="1" >
+            <set>
+                <value>111</value>
+                <value>112</value>
+                <value>113</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="2" >
+            <map>
+                <entry>
+                    <key><value>key</value></key>
+                    <value>value</value>
+                </entry>
+            </map>
+        </constructor-arg>
+        <constructor-arg index="3" >
+            <props>
+                <prop key="k1">1</prop>
+                <prop key="k2">2</prop>
+            </props>
+        </constructor-arg>
+
+    </bean>
+
+    <!-- 自动装配：spring在实例化当前bean的时候从spring容器中找到匹配的实例赋值给当前bean的属性 两种装配策略-->
+    <!-- byName 根据当前bean的属性名在spring容器中找寻匹配的对象，如果根据name找到了bean但是类型不匹配则抛出异常 -->
+    <!-- byType 根据当前bean的属性类型在spring容器中找寻匹配的对象，如果根据类型找到多个，也会抛出异常 -->
+
+    <bean id="stu2" class="com.jy.ioc.beans.Student" autowire="byName"/>
+    <!--<bean id="stu2" class="com.jy.ioc.beans.Student" autowire="byType"/>-->
+
+
+
+    <bean id="productService1" class="com.jy.ioc.service.impl.ProductServiceImpl"></bean>
+    <bean id="productService" class="com.jy.ioc.service.impl.ProductServiceImpl2"></bean>
+    <bean id="testServlet" class="com.jy.ioc.servlet.TestServlet" autowire="byName"></bean>
+</beans>
