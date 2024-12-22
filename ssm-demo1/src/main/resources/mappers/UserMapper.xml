@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jyweb.dao.UserDao">
+
+    <!--定义接口方法对应的 SQL 语句-->
+
+    <resultMap id="userMap" type="User">
+        <id column="user_id" property="userId"/>
+        <id column="user_name" property="userName"/>
+        <id column="user_pwd" property="userPwd"/>
+        <id column="user_realname" property="userRealname"/>
+        <id column="user_img" property="userImg"/>
+    </resultMap>
+
+    <select id="queryUserByName" resultMap="userMap">
+        select user_id,user_name,user_pwd,user_realname,user_img
+        from users
+        where user_name=#{userName}
+    </select>
+
+</mapper>

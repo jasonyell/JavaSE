@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        ">
+
+
+        <!--*************************IOC support ******************************-->
+
+        <context:property-placeholder location="classpath:druid.properties"/>
+
+        <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+            <property name="driverClassName" value="${druid.driver}"/>
+            <property name="url" value="${druid.url}"/>
+            <property name="username" value="${druid.username}"/>
+            <property name="password" value="${druid.password}"/>
+
+            <property name="initialSize" value="${druid.pool.init}"/>
+            <property name="minIdle" value="${druid.pool.minIdle}"/>
+            <property name="maxActive" value="${druid.pool.maxIdle}"/>
+            <property name="maxWait" value="${druid.pool.timeout}"/>
+        </bean>
+
+        <!--依赖spring容器完成mybatis的sqlSessionFactory对象的创建-->
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+            <!--配置数据源-->
+            <property name="dataSource" ref="druidDataSource"/>
+            <!--配置mapper文件的路径-->
+            <property name="mapperLocations" value="classpath:mappers/*Mapper.xml"/>
+            <!--所有pojo类自动取别名,就是类的名字-->
+            <property name="typeAliasesPackage" value="com.jyweb.bean"/>
+            <!--可选：配置mybatis的主配置文件 如开启二级缓存-->
+            <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        </bean>
+
+        <!--加载dao中的所有dao接口，通过sqlSessionFactory获取sqlSession，然后创建所有的DAO接口对象，存储在spring容器-->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+            <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+            <property name="basePackage" value="com.jyweb.dao"/>
+        </bean>
+
+        <!--*************************AOP support ******************************-->
+    <!--1.将spring提供的事务管理器配置给spring容器-->
+        <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="druidDataSource"></property>
+        </bean>
+
+        <!--2.声明使用注解完成事务配置-->
+        <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>
