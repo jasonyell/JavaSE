@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:aop="http://www.springframework.org/schema/aop"
+               xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/aop
+               http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="bookDAO" class="com.jy.dao.BookImpl"></bean>
+    <bean id="studentDAO" class="com.jy.dao.StudentImpl"></bean>
+
+    <bean id="txManager" class="com.jy.utils.TxManager"></bean>
+    <bean id="logManager" class="com.jy.utils.LogManager"></bean>
+    <bean id="bookServiceImpl" class="com.jy.service.BookServiceImpl"/>
+
+    <bean id="MyAspect" class="com.jy.utils.MyAspect"/>
+
+    <aop:config>
+
+        <!--使用 aop:pointcut 标签声明切入点-->
+        <!--<aop:pointcut id="book_insert" expression="execution(* com.jy.dao.BookImpl.insert())"/>-->
+        <!--<aop:pointcut id="book_all" expression="execution(* com.jy.dao.BookImpl.*())"/>-->
+        <aop:pointcut id="book_all" expression="execution(* com.jy.dao.*.*())"/>
+
+        <!--BookDAOImpl 类中所有无参数无返回值的方法-->
+        <aop:pointcut id="book_pc1" expression="execution(void com.jy.dao.BookImpl.*())"/>
+
+        <!--BookDAOImpl 类中所有无返回值的方法-->
+        <aop:pointcut id="book_pc2" expression="execution(void com.jy.dao.BookImpl.*(..))"/>
+
+        <!--BookDAOImpl 类中所有无参数的方法-->
+        <aop:pointcut id="book_pc3" expression="execution(* com.jy.dao.BookImpl.*())"/>
+
+        <!--BookDAOImpl 类中所有的方法-->
+        <aop:pointcut id="book_pc4" expression="execution(* com.jy.dao.BookImpl.*(..))"/>
+
+        <!--BookDAOImpl 包中所有的方法-->
+        <aop:pointcut id="book_pc5" expression="execution(* com.jy.dao.*.*(..))"/>
+
+        <!--BookDAOImpl 类中所有insert的方法-->
+        <aop:pointcut id="book_pc6" expression="execution(* com.jy.dao.BookImpl.insert(..))"/>
+
+        <!--BookDAOImpl 类中所有的方法-->
+        <aop:pointcut id="book_pc7" expression="execution(* *(..))"/>
+
+        <!-- 声明 txManager 为切面 -->
+        <aop:aspect ref="txManager">
+            <!-- 通知 -->
+            <aop:before method="begin" pointcut-ref="book_pc7"/>
+            <aop:after method="commit" pointcut-ref="book_pc7"/>
+        </aop:aspect>
+
+        <aop:aspect ref="logManager">
+            <aop:before method="printLog" pointcut-ref="book_all"/>
+        </aop:aspect>
+
+        <aop:aspect ref="MyAspect">
+            <!--aop:before 前置通知： 切入到指定切入点之前-->
+            <aop:before method="method1" pointcut-ref="book_pc6"/>
+
+            <!--aop:after 后置通知，切入到指定切入点后-->
+            <aop:after method="method2" pointcut-ref="book_pc6"/>
+
+            <!--aop:after-throwing 异常通知，切入点方法抛出异常后-->
+            <aop:after-throwing method="method3" pointcut-ref="book_pc6"/>
+
+            <!--after-returning 方法返回值，对于JavaScript方法而言return返回值也是方法的一部分后执行  -->
+            <!--因此方法返回值返回之后，和 方法执行结束 使用一个时间点，所以after 和 after-return 由配置顺序决定运行顺序-->
+            <aop:after-returning method="method4" pointcut-ref="book_pc6"/>
+
+            <!--aop:around -->
+            <aop:around method="method5" pointcut-ref="book_pc6"/>
+
+
+        </aop:aspect>
+
+    </aop:config>
+
+
+</beans>
