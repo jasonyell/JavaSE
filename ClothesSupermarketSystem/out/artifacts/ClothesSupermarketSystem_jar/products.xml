@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<list>
+	<clothes id="A0001">
+		<brand>lining</brand>
+		<style>上衣</style>
+		<color>白色</color>
+		<size>S</size>
+		<num>4</num>
+		<price>274.0</price>
+		<description>不要钱</description>
+	</clothes>
+	<clothes id="A0002">
+		<brand>NICK</brand>
+		<style>裤子</style>
+		<color>黑色</color>
+		<size>S</size>
+		<num>15</num>
+		<price>123.0</price>
+		<description>免费</description>
+	</clothes>
+	<clothes id="A0003">
+		<brand>ADIDAS</brand>
+		<style>短袖</style>
+		<color>蓝色</color>
+		<size>M</size>
+		<num>22</num>
+		<price>213.0</price>
+		<description>不要钱</description>
+	</clothes>
+</list>
