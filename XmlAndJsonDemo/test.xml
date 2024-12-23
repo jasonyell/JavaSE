@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_191" class="java.beans.XMLDecoder">
+ <object class="com.jason.SAXxml.Person">
+  <void property="address">
+   <string>北京</string>
+  </void>
+  <void property="email">
+   <string>ssssssssssssssssss</string>
+  </void>
+  <void property="fax">
+   <string>d123q</string>
+  </void>
+  <void property="name">
+   <string>38383838</string>
+  </void>
+  <void property="personid">
+   <string>1234</string>
+  </void>
+  <void property="tel">
+   <string>12345666</string>
+  </void>
+ </object>
+</java>

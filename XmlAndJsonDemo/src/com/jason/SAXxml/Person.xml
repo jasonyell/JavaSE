@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<people>
+    <person personid="E01">
+        <name>Tony Blair</name>
+        <address>10 Downing Street, London, UK</address>
+        <tel>(061) 98765</tel>
+        <fax>(061) 98765</fax>
+        <email>blari@everywhere.com</email>
+    </person>
+    <person personid="E02">
+        <name>Jason Blair</name>
+        <address>10 Downing Street,USA</address>
+        <tel>(061) 98765 123</tel>
+        <fax>(061) 98765 123</fax>
+        <email>blii@everywhere.com</email>
+    </person>
+</people>
